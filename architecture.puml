@@ -8,21 +8,23 @@ LAYOUT_TOP_DOWN()
 
 System_Ext(Auth0, "Auth0", "Authentication Provider")
 System_Ext(SparkPost, "SparkPost", "Email Provider")
+System_Ext(CRM, "CRM Systems")
+System_Ext(Chase, "Chase Payment Gateway")
+System_Ext(MaxMind, "MaxMind", "Fraud Detection")
 
 Boundary(CustomerBackoffice, "Customer Backoffice Systems") {
     System_Ext(Campana, "Campana AXIS")
-    System_Ext(Reporting, "Various Reporting Systems")
-    System_Ext(CustomBackoffice, "Custom Backoffice System")
-    System_Ext(GlobalwareDirect, "Globalware (Directly Connected")
-    System_Ext(CRM, "CRM Systems")
+    System_Ext(Reporting, "Reporting Systems")
+    System_Ext(CustomBackoffice, "Custom Backoffice")
+    System_Ext(GlobalwareDirect, "Globalware")
     }
 
 System_Boundary(TST, "TST") {
     System(WebServicesBookings, "Web Services Bookings Data", "Booking Data by ID or Date Range")
     System(GlobalwareService, "Globalware Service", "Synchronizes Bookings with External Globalware Systems")
     System(WebhookService, "Webhooks Service", "Notifies Remote Systems of Booking Updates")
-    System(Trip, "Trip Application", "Manages Customer Trips")
-    System(DynamicItinerary, "Dynamic Itinerary", "Enhances Trips for Planning and Managing Unbooked Items")
+    System(Trip, "Trip", "Manages User Trips and Coordinates Services")
+    System(DynamicItinerary, "Dynamic Itinerary", "Planning and Managing Future Trips")
     System(Admin, "Admin Application", "Agent Booking and Servicing")
     System(TSTProducts, "TST Products", "TST's Suite of Bookable Products")
     System(ManualBooking, "Manual Booking", "Create Bookings for which TST has no Provider")
@@ -38,24 +40,26 @@ Boundary(Providers, "Product Providers/Vendors", "") {
     System_Ext(NonBookableProviders, "Non-bookable Providers", "Provide Data to Enhance Shopping Experience")
     }
 
-BiRel(Auth0, Admin, "Authenticates user logins")
+BiRel(Auth0, Admin, "Authenticates user")
 ' Rel(TravelAgent, Admin, "Login/Manage/Book")
 ' Rel(Consumer, Trip, "Books")
-Rel(CRM, Admin, "Intake Member Data")
+Rel(CRM, Admin, "Member Data")
 
 Rel(WebhookService, CustomBackoffice, "Notification")
 Rel(WebhookService, GlobalwareService, "Notification")
-Rel(CustomBackoffice, WebServicesBookings, "Retrieves booking data")
-Rel(Campana, WebServicesBookings, "Retrieves booking data")
-Rel(Reporting, WebServicesBookings, "Retrieves booking data")
+Rel(CustomBackoffice, WebServicesBookings, "Query Bookings")
+Rel(Campana, WebServicesBookings, "Query Bookings")
+Rel(Reporting, WebServicesBookings, "Query Bookings")
 BiRel(GlobalwareService, GlobalwareDirect, "Creates invoices")
 
 BiRel(Trip, TSTProducts, "Coordinates")
 BiRel(Trip, ManualBooking, "Coordinates")
+Rel(Trip, MaxMind, "Submits for Review")
 Rel(DynamicItinerary, Trip, "Enhances")
 Rel(Admin, Trip, "Manages")
 Rel(Trip, SparkPost, "Sends emails")
 
+Rel(TSTProducts, Chase, "Charge when MOR")
 BiRel(TSTProducts, BookableProviders, "Book and update")
 Rel(NonBookableProviders, TSTProducts, "Incorporate data")
 

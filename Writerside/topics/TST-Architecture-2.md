@@ -11,13 +11,13 @@ LAYOUT_TOP_DOWN()
 
 System_Ext(Auth0, "Auth0", "Authentication Provider")
 System_Ext(SparkPost, "SparkPost", "Email Provider")
+System_Ext(CRM, "CRM Systems")
 
 Boundary(CustomerBackoffice, "Customer Backoffice Systems") {
     System_Ext(Campana, "Campana AXIS")
     System_Ext(Reporting, "Various Reporting Systems")
     System_Ext(CustomBackoffice, "Custom Backoffice System")
     System_Ext(GlobalwareDirect, "Globalware (Directly Connected")
-    System_Ext(CRM, "CRM Systems")
     }
 
 System_Boundary(TST, "TST") {
@@ -48,9 +48,9 @@ Rel(CRM, Admin, "Intake Member Data")
 
 Rel(WebhookService, CustomBackoffice, "Notification")
 Rel(WebhookService, GlobalwareService, "Notification")
-Rel(CustomBackoffice, WebServicesBookings, "Retrieves booking data")
-Rel(Campana, WebServicesBookings, "Retrieves booking data")
-Rel(Reporting, WebServicesBookings, "Retrieves booking data")
+Rel(CustomBackoffice, WebServicesBookings, "Query Bookings")
+Rel(Campana, WebServicesBookings, "Query Bookings")
+Rel(Reporting, WebServicesBookings, "Query Bookings")
 BiRel(GlobalwareService, GlobalwareDirect, "Creates invoices")
 
 BiRel(Trip, TSTProducts, "Coordinates")
