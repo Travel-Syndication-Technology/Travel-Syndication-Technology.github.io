@@ -8,6 +8,7 @@
 
     <toc-element topic="Home.md"/>
     <toc-element topic="Default-topic.md"/>
-    <toc-element topic="TST-Architecture.md"/>
+    <toc-element topic="TST-Architecture.md" hidden="true"/>
     <toc-element topic="TST-Architecture-2.md"/>
+    <toc-element topic="CRM-Integration.md"/>
 </instance-profile>

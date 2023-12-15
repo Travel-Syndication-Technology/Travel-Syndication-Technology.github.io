@@ -1,4 +1,4 @@
-# TST Architecture (PlantUML)
+# TST Architecture
 
 ```plantuml
 @startuml TST_Architecture
@@ -25,8 +25,10 @@ System_Boundary(TST, "TST") {
     System(GlobalwareService, "Globalware Service", "Synchronizes Bookings with External Globalware Systems")
     System(WebhookService, "Webhooks Service", "Notifies Remote Systems of Booking Updates")
     System(Trip, "Trip Application", "Manages Customer Trips")
+    System(DynamicItinerary, "Dynamic Itinerary", "Enhances Trips for Planning and Managing Unbooked Items")
     System(Admin, "Admin Application", "Agent Booking and Servicing")
-    System(TSTProducts, "TST Products")
+    System(TSTProducts, "TST Products", "TST's Suite of Bookable Products")
+    System(ManualBooking, "Manual Booking", "Create Bookings for which TST has no Provider")
     Boundary(AWS, "AWS Systems", "") {
         SystemDb(TSTMySQL, "RDS (MySQL/PostgreSQL)", "Configuration, Bookings, Inventories, Caching")
         SystemDb(TSTRedis, "Elasticache (Redis)", "Caching")
@@ -49,22 +51,16 @@ Rel(WebhookService, GlobalwareService, "Notification")
 Rel(CustomBackoffice, WebServicesBookings, "Retrieves booking data")
 Rel(Campana, WebServicesBookings, "Retrieves booking data")
 Rel(Reporting, WebServicesBookings, "Retrieves booking data")
-BiRel(GlobalwareService, GlobalwareDirect, "Synchronizes invoices")
+BiRel(GlobalwareService, GlobalwareDirect, "Creates invoices")
 
 BiRel(Trip, TSTProducts, "Coordinates")
+BiRel(Trip, ManualBooking, "Coordinates")
+Rel(DynamicItinerary, Trip, "Enhances")
 Rel(Admin, Trip, "Manages")
 Rel(Trip, SparkPost, "Sends emails")
 
 BiRel(TSTProducts, BookableProviders, "Book and update")
 Rel(NonBookableProviders, TSTProducts, "Incorporate data")
-
-Lay_U(TST, CustomerBackoffice)
-Lay_L(TST, CustomerBackoffice)
-Lay_L(TST, AWS)
-Lay_R(TST, Providers)
-' Lay_D(TST, Consumer)
-' Lay_U(Providers, Consumer)
-' Lay_R(TST, TravelAgent)
 
 @enduml
 ```
