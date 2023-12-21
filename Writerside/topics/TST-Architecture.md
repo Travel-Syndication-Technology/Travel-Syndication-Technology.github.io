@@ -2,7 +2,7 @@
 
 ```mermaid
 C4Context
-      title TST Architectural Layout)
+    title TST Architectural Layout
     
     System_Ext(Auth0, "Auth0", "Authentication Provider")
     System_Ext(SparkPost, "SparkPost", "Email Provider")
